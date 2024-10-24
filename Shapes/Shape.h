@@ -23,7 +23,8 @@ public:
 	virtual bool Save() = 0;
 	virtual vector<Shape*>Load() = 0;
 	const char* getDir() const { return directory.c_str(); }
-	json getJson() { return json_array; }
+	json getJson() const { return json_array; }
+	virtual string getName() const { return name; }
 
 };
 

@@ -1,30 +1,30 @@
 #pragma once
-#include <iostream>
-#include <sqlite3.h>
+#include <string>
 #include <nlohmann/json.hpp>
-#include <iostream>
+
 #include "format"
 #include "Shape.h"
+#include "Rectangle.h"
 
+
+using namespace std;
 using json = nlohmann::json;
 
-class Square : private Shape{
+class Elips : private Shape{
 private:
 	//from left top angle to rigth for coordinates;
-
-	int A;
+	int A, B, X, Y;
 	sqlite3* DB;
 	sqlite3_stmt* stmt;
-	string name_table = "Square";
-	string directory = "./DB/Square.db";
+	string name_table = "Elips";
+	string directory = "./DB/Elips.db";
 public:
-	Square(string name, int A); // constructor to open DB in body
-	~Square() { sqlite3_close(this->DB); }
+	Elips(string name, int A, int B, int X, int Y);
+	~Elips() { sqlite3_close(this->DB); }
 
 	string Show() override;
 
 	bool Save() override;
 	vector<Shape*> Load() override;
-
 };
 

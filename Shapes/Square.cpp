@@ -7,9 +7,14 @@ Square::Square(string name, int A) : Shape::Shape(name), A{ A }, stmt{ nullptr }
 		cerr << "DB can't open";
 	}
 }
+
+string Square::Show() {
+	cout << format("\nname:{}\nA,B,C,D {}cm", name, A);
+	return format("\nname:{}\nA,B,C,D {}cm", name, A);
+}
+
 bool Square::Save() {
 
-	sqlite3_finalize(stmt);
 	string sql = "\
 		CREATE TABLE IF NOT EXISTS " + name_table + "(\
 		`ID` INTEGER PRIMARY KEY AUTOINCREMENT, \

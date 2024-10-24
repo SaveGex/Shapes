@@ -1,9 +1,7 @@
-#include "Circle.h"
+#include "Elips.h"
 
-
-
-Circle::Circle(string name, int R)
-	: Shape::Shape(name), R{R}, stmt{ nullptr } {
+Elips::Elips(string name, int A, int B, int X, int Y) 
+	: Shape(name), A{ A }, B{ B }, X{ X }, Y{ Y }, stmt{ nullptr } {
 
 	int error = sqlite3_open(directory.c_str(), &this->DB);
 	if (error != SQLITE_OK) {
@@ -11,12 +9,11 @@ Circle::Circle(string name, int R)
 	}
 }
 
-string Circle::Show() {
-	cout << format("\nname: {}\nRadius: {}", name, R); 
-	return format("\nname: {}\nRadius: {}", name, R);
+string Elips::Show() {
+	cout << format("\nname:{}\nA{}cm\tB{}cm\tC{}cm\tD{}cm", name, A, B, X, Y);
+	return format("\nname:{}\nA{}cm\tB{}cm\tC{}cm\tD{}cm", name, A, B, X, Y);
 }
-
-bool Circle::Save() {
+bool Elips::Save() {
 
 	string sql = "\
 		CREATE TABLE IF NOT EXISTS " + name_table + "(\
@@ -28,7 +25,11 @@ bool Circle::Save() {
 
 	json json_obj;
 	json_obj["data"] = json::array();
-	json_obj["data"].push_back(R);
+	json_obj["data"].push_back(A);
+	json_obj["data"].push_back(B);
+	json_obj["data"].push_back(X);
+	json_obj["data"].push_back(Y);
+
 	string jsonString = json_obj.dump();
 
 	sql = "INSERT INTO " + name_table + " (NAME, DATA) VALUES(? , ?); ";
@@ -52,7 +53,7 @@ bool Circle::Save() {
 
 }
 
-vector<Shape*> Circle::Load() {
+vector<Shape*> Elips::Load() {
 
 	vector<Shape*> Shapes_vector;
 	json json_obj;
@@ -71,9 +72,12 @@ vector<Shape*> Circle::Load() {
 
 			try {
 				json parsedJson = json::parse(jsonString);
-				int value = parsedJson["data"][0].get<int>();
+				int value1 = parsedJson["data"][0].get<int>();
+				int value2 = parsedJson["data"][1].get<int>();
+				int value3 = parsedJson["data"][2].get<int>();
+				int value4 = parsedJson["data"][3].get<int>();
 
-				Circle* obj = new Circle(name, value);
+				Elips* obj = new Elips(name, value1, value2, value3, value4);
 				Shapes_vector.push_back(obj);
 			}
 			catch (json::parse_error& e) {
